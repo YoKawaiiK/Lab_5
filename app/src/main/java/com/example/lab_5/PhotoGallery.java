@@ -112,6 +112,17 @@ public class PhotoGallery extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    //Вызывается из PhotoAdapter, когда происходит нажатие на фото
+    public void onClick(View view) {
+        int position = (int) view.getTag();
+        Intent intent = new Intent(this, DetailPhoto.class);
+        Gson gson = new Gson();
+
+        intent.putExtra("photo", gson.toJson(photos.get(position)));
+        intent.putExtra("position", position);
+
+        startActivityForResult(intent, 1);
+    }
 
 
 }
