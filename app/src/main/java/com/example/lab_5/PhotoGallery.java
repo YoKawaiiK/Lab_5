@@ -62,7 +62,7 @@ public class PhotoGallery extends AppCompatActivity {
         flickr_api_key = localOption.getFlickr_api_key();
 
         //Запросить изображения с flickr.com
-
+        getPhotosFromFlickr();
     }
 
     //Изменить главное меню
@@ -101,7 +101,7 @@ public class PhotoGallery extends AppCompatActivity {
 
                 break;
             case (R.id.photo_flickr):
-
+                getPhotosFromFlickr();
                 break;
             case (R.id.set_token):
                 Intent intent = new Intent(PhotoGallery.this, ActivitySetToken.class);
@@ -145,7 +145,7 @@ public class PhotoGallery extends AppCompatActivity {
                 new_flickr_api_key != null) {
             localOption.setOption("flickr_api_key", new_flickr_api_key);
             flickr_api_key = localOption.getFlickr_api_key();
-
+            getPhotosFromFlickr();
         }
     }
 
