@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Lab_5</string>
+    <string name="button">Button</string>
+    <string name="b_setTokenText">Установить токен</string>
 </resources>
