@@ -124,5 +124,31 @@ public class PhotoGallery extends AppCompatActivity {
         startActivityForResult(intent, 1);
     }
 
+    //Возврат в главное activity
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+
+        boolean is_removed = intent.getBooleanExtra("is_removed", false);
+        String new_flickr_api_key = intent.getStringExtra("new_flickr_api_key");
+
+        //Если произошло удаление фото из БД, то удалить данное фото из списка
+        if (is_removed) {
+            int position = intent.getIntExtra("position", 0);
+            photos.remove(position);
+            adapter.notifyDataSetChanged();
+        }
+
+        // Если Токен новый
+        if (flickr_api_key != new_flickr_api_key &&
+                new_flickr_api_key != "" &&
+                new_flickr_api_key != null) {
+            localOption.setOption("flickr_api_key", new_flickr_api_key);
+            flickr_api_key = localOption.getFlickr_api_key();
+
+        }
+
+    }
+
 
 }
