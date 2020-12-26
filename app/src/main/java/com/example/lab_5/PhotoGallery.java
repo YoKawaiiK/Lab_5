@@ -92,6 +92,26 @@ public class PhotoGallery extends AppCompatActivity {
         return true;
     }
 
+    // Обработчик нажатий пунктов меню из toolbar
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Выбор действия зависит от id элемента в меню
+        switch (item.getItemId()) {
+            case (R.id.photo_db):
+
+                break;
+            case (R.id.photo_flickr):
+
+                break;
+            case (R.id.set_token):
+                Intent intent = new Intent(PhotoGallery.this, ActivitySetToken.class);
+                intent.putExtra("flickr_api_key", flickr_api_key);
+                startActivityForResult(intent, 1);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
 
 }
