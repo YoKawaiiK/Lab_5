@@ -25,7 +25,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class PhotoGallery extends AppCompatActivity {
-
+    // Для RecyclerView
     PhotoAdapter adapter;
     RecyclerView list_view;
     PhotosDB photos_db;
@@ -33,7 +33,6 @@ public class PhotoGallery extends AppCompatActivity {
 
     // Настройки приложения
     LocalOption localOption;
-
 
     String flickr_api_key;
     // Здесь можно вставить свой токен, чтобы не писать с телефона
@@ -101,7 +100,10 @@ public class PhotoGallery extends AppCompatActivity {
                 getPhotosFromFlickr();
                 break;
             case (R.id.set_token):
-                Intent intent = new Intent(PhotoGallery.this, ActivitySetToken.class);
+                Intent intent = new Intent(
+                        PhotoGallery.this,
+                        ActivitySetToken.class
+                );
                 intent.putExtra("flickr_api_key", flickr_api_key);
                 startActivityForResult(intent, 1);
                 break;
@@ -205,7 +207,6 @@ public class PhotoGallery extends AppCompatActivity {
             });
         }
     }
-
 
     //Получить изображния из БД
     public void getPhotosFromDB() {
