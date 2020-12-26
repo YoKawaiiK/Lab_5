@@ -72,23 +72,20 @@ public class PhotoGallery extends AppCompatActivity {
 
         MenuItem menuItem = menu.findItem(R.id.app_bar_search);
         SearchView searchView = (SearchView) menuItem.getActionView();
-
-        //Прослушивать элемент поиска
+        //Прослушиваем поисковую строку
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             //Сработает при отправке введенного текста
             @Override
             public boolean onQueryTextSubmit(String query) {
-
+                getSearchPhotosFromFlickr(query);
                 return true;
             }
-
             //Сработает при вводе текста
             @Override
             public boolean onQueryTextChange(String newText) {
                 return false;
             }
         });
-
         return true;
     }
 
@@ -98,7 +95,7 @@ public class PhotoGallery extends AppCompatActivity {
         // Выбор действия зависит от id элемента в меню
         switch (item.getItemId()) {
             case (R.id.photo_db):
-
+                getPhotosFromDB();
                 break;
             case (R.id.photo_flickr):
                 getPhotosFromFlickr();
@@ -178,5 +175,44 @@ public class PhotoGallery extends AppCompatActivity {
         }
     }
 
+    //Асинхронный запрос на flickr для получения изображений по введенному запросу в поиске
+    public void getSearchPhotosFromFlickr(String text) {
+        if (flickr_api_key != "") {
+            ServiceAPI.getFlickrAPI().getSearchPhotos(flickr_api_key, text).enqueue(new Callback<FlickrPhotos>() {
+                @Override
+                public void onResponse(Call<FlickrPhotos> call, Response<FlickrPhotos> response) {
+                    // Если ответ с сервера придет в виде с ошибкой, то возникнет ошибка
+                    try {
+                        photos = response.body().getPhotos().getPhoto();
+                        adapter.updatePhotoList(photos);
+                    }
+                    // Обработка, когда встречается ошибка
+                    catch (Exception error) {
+                        Toast.makeText(
+                                PhotoGallery.this,
+                                "Error Token.",
+                                Toast.LENGTH_SHORT
+                        ).show();
+                    }
+                }
+                @Override
+                public void onFailure(Call<FlickrPhotos> call, Throwable t) {
+                    Toast.makeText(PhotoGallery.this,
+                            "An error occurred during networking",
+                            Toast.LENGTH_SHORT
+                    ).show();
+                }
+            });
+        }
+    }
+
+
+    //Получить изображния из БД
+    public void getPhotosFromDB() {
+        photos_db.request(
+                () -> photos = photos_db.photoDao().LoadAll(),
+                () -> adapter.updatePhotoList(photos)
+        );
+    }
 
 }
